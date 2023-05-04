@@ -1,4 +1,3 @@
-
 import re
 from typing import Dict, List, Tuple, Union
 
@@ -23,10 +22,12 @@ async def get_stock_with_tse_id(tse_id: str) -> Union[StockDataClass, Tuple]:
     try:
         response = await get_request(url, timeout=60)
         assert response is not None
+        response=response.replace('\u200c', '')  # حذف فاصله مجازی برای نماد های مثل دتهران
         symbol = replace_arabic(re.findall(
             r"LVal18AFC='([\w\s]*)',", response)[0])
         if symbol == "',DEven='',LSecVal='',CgrValCot='',Flow='',InstrumentID='":
-            raise Exception(f"{tse_id}not found")
+            _logger.warning("%s not stock",tse_id)
+            raise Exception(f"{tse_id} not found")
         _stock.symbol = symbol
 
         _stock.name = replace_arabic(re.findall(
@@ -53,11 +54,12 @@ async def get_stock_with_tse_id(tse_id: str) -> Union[StockDataClass, Tuple]:
 
         _, _stock.old_ids = await get_stock_ids_with_symbol(symbol)
 
-        _logger.debug("scraped stock with tse id : %s", tse_id)
+        _logger.debug("scrape stock with tse id : %s success", tse_id)
     except AssertionError:
+        _logger.warning("scraping stock with tse id : %s server not respond",tse_id)
         return (tse_id, "Server not respond")
     except Exception as error:
-        _logger.debug("scraping stock with this error: %s", error)
+        _logger.warning("scraping stock with this error: %s , %s", error,tse_id)
         return (tse_id, f"{error}")
     return _stock
 
@@ -66,7 +68,6 @@ async def get_stock_ids_with_symbol(stock_symbol: str):
     """
     get stock ids from tse symbol search page
     """
-    _logger.debug("scraping stock ids with symbol : %s", stock_symbol.encode())
     url = scrape_url.TSETMC_SEARCH_WITH_SYMBOL.format(stock_symbol.strip())
     response = await get_request(url)
     assert response is not None
@@ -82,7 +83,6 @@ async def get_stock_ids_with_symbol(stock_symbol: str):
                 current_id = symbol_full_info[2]  # active stock id
             else:
                 old_ids.append(symbol_full_info[2])  # old stock id
-    _logger.debug("scraped stock ids with symbol : %s", stock_symbol.encode())
     return current_id, old_ids
 
 
@@ -116,11 +116,11 @@ async def get_stocks_list_from_symbols_list_page() -> List[StockDataClass]:
             StockDataClass(
                 instrument_id=row_data[0].text,
                 symbol=replace_arabic(row_data[6].a.text),
-                name=replace_arabic(row_data[7].a.text).replace('\u200c', ' '),
+                name=replace_arabic(row_data[7].a.text),
                 current_id=row_data[6].a.get('href').partition('inscode=')[2],
             )
         )
-    _logger.info("scraped stocks information from symbols list page")
+    _logger.info("scrape stocks information from symbols list page success")
     return stocks_list
 
 
@@ -150,7 +150,7 @@ async def get_stocks_list_from_market_watch_init_page() -> List[StockDataClass] 
         symbol_name_ends_with_number = re.search(r'\d+$', data[2])
         if symbol_name_ends_with_number:
             continue
-        if "گواهی" in replace_arabic(data[3]).replace('\u200c', ''):
+        if "گواهی" in replace_arabic(data[3]):
             # if name contains 'گواهی' it's some kind of symbol
             # like 'گواهی شیشه' and we don't want it
             continue
@@ -162,10 +162,10 @@ async def get_stocks_list_from_market_watch_init_page() -> List[StockDataClass] 
                 instrument_id=replace_arabic(data[1]),
                 symbol=replace_arabic(data[2]),
                 current_id=replace_arabic(data[0]),
-                name=replace_arabic(data[3]).replace('\u200c', ' '),
+                name=replace_arabic(data[3]),
             )
         )
-    _logger.info("scraped stocks information from market watch page")
+    _logger.info("scrape stocks information from market watch page success")
     return stocks_list
 
 

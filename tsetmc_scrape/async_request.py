@@ -29,13 +29,13 @@ async def get_request(url: str, retry: int = 10, timeout: int = 10) -> Optional[
                             "Server not responding, retrying... URL: %s", url.encode())
                         await asyncio.sleep(2)
                     else:
-                        _logger.debug("HTTP error: %s URL: %s",
-                                      response.status, url.encode())
+                        _logger.warning("HTTP error: %s URL: %s",
+                                        response.status, url.encode())
                         return None
             except (asyncio.TimeoutError, aiohttp.ClientError):
                 _logger.debug(
                     "Connection error, retrying... URL: %s", url.encode())
                 await asyncio.sleep(2)
-        _logger.debug("Request failed after %s retries URL: %s",
-                      retry, url.encode())
+        _logger.warning(
+            "Request failed after %s retries URL: %s", retry, url.encode())
         return None

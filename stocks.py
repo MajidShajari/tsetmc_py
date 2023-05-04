@@ -13,8 +13,6 @@ from utils import (
     decorator
 )
 
-_logger = custom_logger.main_logger
-
 
 class Stocks:
     """
@@ -23,7 +21,6 @@ class Stocks:
 
     def __init__(self, stocks_list: List[str] | str = "all", ):
         self._stocks_list: List[StockDataClass] = []
-        self._logger = _logger
         if stocks_list == "all":
             self._get_all_stocks()
 
@@ -50,8 +47,8 @@ class Stocks:
             stock.current_id) for stock in stocks_list]
         _stocks_list = [result for result in await asyncio.gather(*complete_tasks, return_exceptions=True) if isinstance(result, StockDataClass)]
         if len(stocks_list) != len(_stocks_list):
-            self._logger.info('stocks not complete download, check logger file : %s Error', len(
-                stocks_list)-len(_stocks_list))
+            print(
+                f"stocks not complete download, check logger file : {len(stocks_list)-len(_stocks_list)} Error", )
         return _stocks_list
 
     @property
@@ -59,7 +56,7 @@ class Stocks:
         """
         convert to dataclass
         """
-        self._logger.info("convert to dataclass")
+        print("convert to dataclass")
         return self._stocks_list
 
     @property
@@ -67,7 +64,7 @@ class Stocks:
         """
         convert to dict
         """
-        self._logger.info("convert to dict")
+        print("convert to dict")
         return [stock.__dict__ for stock in self._stocks_list]
 
     @property
@@ -75,7 +72,7 @@ class Stocks:
         """
         convert to dataframe
         """
-        self._logger.info("convert to dataframe")
+        print("convert to dataframe")
         return pd.DataFrame(self.to_dict).set_index('current_id')
 
 
@@ -91,3 +88,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # asyncio.run(get_stock_with_tse_id("14985138705106402"))
