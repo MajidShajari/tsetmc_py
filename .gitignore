@@ -133,4 +133,4 @@ dmypy.json
 *.xlsx
 
 # exclude
-main
+main.py
