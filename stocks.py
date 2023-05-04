@@ -8,9 +8,7 @@ from tsetmc_scrape import (
     get_stock_with_tse_id
 )
 from utils import (
-    custom_logger,
     StockDataClass,
-    decorator
 )
 
 
@@ -74,18 +72,3 @@ class Stocks:
         """
         print("convert to dataframe")
         return pd.DataFrame(self.to_dict).set_index('current_id')
-
-
-@decorator.timeit
-def main():
-    """
-    main
-    """
-    # print(asyncio.run(get_stock_with_tse_id("12660940572636629")))
-    stocks_list = Stocks()
-    stocks_list.to_dataframe.to_excel("symbols.xlsx")
-
-
-if __name__ == "__main__":
-    main()
-    # asyncio.run(get_stock_with_tse_id("14985138705106402"))
