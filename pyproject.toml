@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "scrape-tsetmc"
+version = "0.1.0"
+description = "scrape for stock detail"
+authors = ["Majid Shajari <majidpy89@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "scrape_tsetmc"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "*"
+beautifulsoup4 = "*"
+aiohttp = "*"
+persiantools = "*"
+openpyxl = "*"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
