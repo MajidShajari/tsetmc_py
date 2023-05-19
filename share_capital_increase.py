@@ -5,7 +5,7 @@ import pandas as pd
 
 from utils import (
     custom_logger,
-    convert_jalaali_to_gregorian,
+    convert_jalali_to_gregorian,
     convert_to_jalali_date
 )
 from tsetmc_scrape import get_share_capital_increase_html, translations
@@ -26,7 +26,7 @@ def get_increase_data() -> pd.DataFrame:
 
 def _adjust_dataframe(dataframe: pd.DataFrame):
     dataframe['jdate'] = dataframe['jdate'].apply(convert_to_jalali_date)
-    dataframe['date'] = dataframe["jdate"].map(convert_jalaali_to_gregorian)
+    dataframe['date'] = dataframe["jdate"].map(convert_jalali_to_gregorian)
     dataframe = dataframe.sort_values(by='date')
 
 

@@ -47,6 +47,13 @@ class Stocks:
                 f"stocks not complete download, check logger file : {len(stocks_list)-len(_stocks_list)} Error", )
         return _stocks_list
 
+    def get_all(self):
+        self._get_all_stocks()
+
+    def get_many(self, stocks_list: List[str]):
+        if isinstance(stocks_list, List):
+            pass
+
     @property
     def to_dataclass(self) -> List[StockDataClass]:
         """

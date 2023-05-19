@@ -5,9 +5,8 @@ import pandas as pd
 from bs4 import BeautifulSoup, PageElement
 
 from tsetmc_scrape import scrape_url
-from tsetmc_scrape.async_request import get_request
-from utils import StockDataClass, custom_logger, replace_arabic
-from .table_scraper import (
+from utils import StockDataClass, custom_logger, replace_arabic, get_request
+from utils import (
     get_html_table_header_and_rows,
     convert_html_table_to_dataframe
 )

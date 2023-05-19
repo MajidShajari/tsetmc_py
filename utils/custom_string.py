@@ -17,13 +17,14 @@ def convert_to_number_if_number(string: str):
         return string
 
 
-def convert_jalaali_to_gregorian(jalaali_date):
+def convert_jalali_to_gregorian(jalaali_date):
     if not isinstance(jalaali_date, JalaliDate):
         jalaali_date = convert_to_jalali_date(jalaali_date)
     return jalaali_date.to_gregorian()
 
 
 def convert_to_jalali_date(date):
+    delimiter = ""
     if "/" in str(date):
         delimiter = "/"
     elif "-" in str(date):
