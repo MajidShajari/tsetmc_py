@@ -1,6 +1,30 @@
 {
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.autopep8"
-    },
-    "python.formatting.provider": "none"
+    "cSpell.words": [
+        "aiohttp",
+        "beautifulsoup",
+        "dataframe",
+        "inscode",
+        "levelname",
+        "openpyxl",
+        "persiantools",
+        "rtype",
+        "Titad",
+        "tsetmc",
+        "اختیار",
+        "افزایش",
+        "امتیاز",
+        "اوراق",
+        "برای",
+        "تسهیلات",
+        "خرید",
+        "دتهران",
+        "سرمایه",
+        "شیشه",
+        "فاصله",
+        "فروش",
+        "گواهی",
+        "مجازی",
+        "مشارکت",
+        "نماد"
+    ]
 }

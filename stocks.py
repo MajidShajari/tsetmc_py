@@ -17,10 +17,8 @@ class Stocks:
     get stocks data from tsetmc
     """
 
-    def __init__(self, stocks_list: List[str] | str = "all", ):
+    def __init__(self):
         self._stocks_list: List[StockDataClass] = []
-        if stocks_list == "all":
-            self._get_all_stocks()
 
     def _get_all_stocks(self):
         """
@@ -32,7 +30,7 @@ class Stocks:
                 return_exceptions=True)
             stocks_list = set(stock for result in stocks_list if isinstance(
                 result, list) for stock in result)
-            self._stocks_list = await self._complete_stocks_list(stocks_list)
+            self._stocks_list = await self._complete_stocks_list(list(stocks_list))
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)

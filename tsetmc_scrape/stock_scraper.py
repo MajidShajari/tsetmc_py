@@ -9,7 +9,7 @@ from tsetmc_scrape.async_request import get_request
 from utils import StockDataClass, custom_logger, replace_arabic
 from .table_scraper import (
     get_html_table_header_and_rows,
-    convert_html_table_to_dateframe
+    convert_html_table_to_dataframe
 )
 
 _logger = custom_logger.main_logger
@@ -22,14 +22,14 @@ async def get_stock_with_tse_id(tse_id: str) -> Union[StockDataClass, Tuple]:
     try:
         response = await get_request(url, timeout=60)
         assert response is not None
-        response=response.replace('\u200c', '')  # حذف فاصله مجازی برای نماد های مثل دتهران
+        # حذف فاصله مجازی برای نماد های مثل دتهران
+        response = response.replace('\u200c', '')
         symbol = replace_arabic(re.findall(
             r"LVal18AFC='([\w\s]*)',", response)[0])
         if symbol == "',DEven='',LSecVal='',CgrValCot='',Flow='',InstrumentID='":
-            _logger.warning("%s not stock",tse_id)
-            raise Exception(f"{tse_id} not found")
+            _logger.warning("%s not stock", tse_id)
+            return (tse_id, "not found")
         _stock.symbol = symbol
-
         _stock.name = replace_arabic(re.findall(
             r"Title='(.*?)',", response)[0].split("-")[0].split("(")[0])
 
@@ -56,10 +56,12 @@ async def get_stock_with_tse_id(tse_id: str) -> Union[StockDataClass, Tuple]:
 
         _logger.debug("scrape stock with tse id : %s success", tse_id)
     except AssertionError:
-        _logger.warning("scraping stock with tse id : %s server not respond",tse_id)
+        _logger.warning(
+            "scraping stock with tse id : %s server not respond", tse_id)
         return (tse_id, "Server not respond")
     except Exception as error:
-        _logger.warning("scraping stock with this error: %s , %s", error,tse_id)
+        _logger.warning(
+            "scraping stock with this error: %s , %s", error, tse_id)
         return (tse_id, f"{error}")
     return _stock
 
@@ -84,10 +86,6 @@ async def get_stock_ids_with_symbol(stock_symbol: str):
             else:
                 old_ids.append(symbol_full_info[2])  # old stock id
     return current_id, old_ids
-
-
-# logger config
-_logger = custom_logger.main_logger
 
 
 async def get_stocks_list_from_symbols_list_page() -> List[StockDataClass]:
@@ -179,7 +177,7 @@ async def get_share_capital_increase_html() -> pd.DataFrame:
     tables = [div_node.parent.find("table") for div_node in divs_node]
     all_df = pd.DataFrame()
     for table in tables:
-        table_dfs = convert_html_table_to_dateframe(table)
+        table_dfs = convert_html_table_to_dataframe(table)
         all_df = pd.concat([all_df, table_dfs])
     all_df = all_df.reset_index(drop=True)
     _logger.debug("scraped share capital increase html")

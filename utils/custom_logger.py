@@ -5,7 +5,7 @@ import pathlib
 from queue import Queue
 
 
-def configure_logging(log_file_path: str = None, level: str = "debug"):
+def configure_logging(log_file_path: str = "", level: str = "debug"):
     log_level = getattr(logging, level.upper(), logging.DEBUG)
 
     logging.getLogger().setLevel(log_level)
@@ -28,7 +28,6 @@ def configure_logging(log_file_path: str = None, level: str = "debug"):
         file_handler.setLevel(log_level)
         file_handler.setFormatter(formatter)
         logging.getLogger().addHandler(file_handler)
-
     # Create the queue handler
     queue = Queue(-1)
     queue_handler = logging.handlers.QueueHandler(queue)
@@ -36,13 +35,13 @@ def configure_logging(log_file_path: str = None, level: str = "debug"):
 
     # Create the queue listener
     queue_listener = logging.handlers.QueueListener(
-        queue, file_handler if log_file_path else console_handler)
+        queue, file_handler if log_file_path else console_handler)  # type: ignore
     queue_listener.start()
 
 
 if __name__ == "__main__":
     pathlib.Path.cwd().joinpath("log").mkdir(parents=True, exist_ok=True)
-    LOG_PATH = f"log/test.log"
+    LOG_PATH = "log/test.log"
     configure_logging(log_file_path=LOG_PATH)
     logger = logging.getLogger(__name__)
     logger.debug('Debug message')

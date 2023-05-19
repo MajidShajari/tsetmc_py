@@ -27,7 +27,7 @@ def get_html_table_header_and_rows(
     return header, rows
 
 
-def convert_html_table_to_dateframe(table) -> pd.DataFrame:
+def convert_html_table_to_dataframe(table) -> pd.DataFrame:
     """
     given table element from shareholders page returns DatFrame
     Containing the table
