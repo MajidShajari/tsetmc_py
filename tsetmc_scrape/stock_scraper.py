@@ -25,7 +25,7 @@ async def get_stock_with_tse_id(tse_id: str) -> Union[StockDataClass, Tuple]:
         response = response.replace('\u200c', ' ')
         symbol = replace_arabic(re.findall(
             r"LVal18AFC='([\w\s]*)',", response)[0])
-        if symbol == "',DEven='',LSecVal='',CgrValCot='',Flow='',InstrumentID='":
+        if symbol == "',DEven='',LSecVal='',CgrValCot='',Flow='',InstrumentID='" or symbol == "":
             _logger.warning("%s not stock", tse_id)
             return (tse_id, "not found")
         _stock.symbol = symbol
