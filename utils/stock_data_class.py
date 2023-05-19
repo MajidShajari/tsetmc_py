@@ -19,7 +19,6 @@ class StockDataClass:
     flow: str = ""
 
     def __post_init__(self):
-        self.name = self.name.replace('\u200c', ' ')
         self.name = self.name.replace("  ", " ")
 
     def __hash__(self):

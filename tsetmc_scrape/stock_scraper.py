@@ -22,7 +22,7 @@ async def get_stock_with_tse_id(tse_id: str) -> Union[StockDataClass, Tuple]:
         response = await get_request(url, timeout=60)
         assert response is not None
         # حذف فاصله مجازی برای نماد های مثل دتهران
-        response = response.replace('\u200c', '')
+        response = response.replace('\u200c', ' ')
         symbol = replace_arabic(re.findall(
             r"LVal18AFC='([\w\s]*)',", response)[0])
         if symbol == "',DEven='',LSecVal='',CgrValCot='',Flow='',InstrumentID='":
