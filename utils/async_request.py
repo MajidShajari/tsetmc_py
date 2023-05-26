@@ -18,12 +18,14 @@ async def get_request(url: str, retry: int = 10, timeout: int = 10) -> Optional[
     """
     status_forcelist = (500, 502, 503, 504)
     timeout = aiohttp.ClientTimeout(total=timeout)  # type: ignore
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     async with aiohttp.ClientSession(timeout=timeout) as session:
         for _ in range(retry):
             try:
-                async with session.get(url) as response:
+                async with session.get(url, headers=headers) as response:
                     if response.status == 200:
-                        return await response.text()
+                        return await response.text(encoding="utf-8")
                     if response.status in status_forcelist:
                         _logger.debug(
                             "Server not responding, retrying... URL: %s", url.encode())
