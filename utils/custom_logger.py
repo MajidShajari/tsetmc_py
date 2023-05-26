@@ -24,16 +24,13 @@ def configure_logging(log_file_path: str = "", level: str = "debug"):
     if log_file_path:
         pathlib.Path(log_file_path).parent.mkdir(parents=True, exist_ok=True)
         file_handler = logging.handlers.RotatingFileHandler(
-            log_file_path, maxBytes=10 * 1024 * 1024, backupCount=5)
+            log_file_path, maxBytes=10 * 1024 * 1024, backupCount=5, encoding="utf-8")
         file_handler.setLevel(log_level)
         file_handler.setFormatter(formatter)
         logging.getLogger().addHandler(file_handler)
-    # Create the queue handler
-    queue = Queue(-1)
-    queue_handler = logging.handlers.QueueHandler(queue)
-    logging.getLogger().addHandler(queue_handler)
 
     # Create the queue listener
+    queue = Queue(-1)
     queue_listener = logging.handlers.QueueListener(
         queue, file_handler if log_file_path else console_handler)  # type: ignore
     queue_listener.start()
@@ -47,7 +44,7 @@ if __name__ == "__main__":
     logger.debug('Debug message')
     logger.info('Info message')
     logger.warning('Warning message')
-    logger.error('Error message')
+    logger.error('Error message-مجید')
     logger.critical('Critical message')
 else:
     pathlib.Path.cwd().joinpath("log").mkdir(parents=True, exist_ok=True)
