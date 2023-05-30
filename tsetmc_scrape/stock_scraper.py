@@ -87,15 +87,15 @@ async def get_stock_ids_with_symbol(stock_symbol: str):
     return current_id, old_ids
 
 
-async def get_stocks_list_from_symbols_list_page() -> List[StockDataClass]:
+async def get_stocks_list_from_stocks_list_page() -> List[StockDataClass]:
     """
-    uses SYMBOLS_LIST_URL and scrapes stocks information from the page
+    uses STOCKS_LIST_URL and scrapes stocks information from the page
     :return: list of all stocks
     :rtype: List[StockDataClass]
     """
     _logger.info("scraping stocks information from symbols list page")
     stocks_list = []
-    url = scrape_url.SYMBOLS_LIST_URL
+    url = scrape_url.STOCKS_LIST_URL
     response = await get_request(url)
     assert response is not None
     soup = BeautifulSoup(response, 'html.parser')

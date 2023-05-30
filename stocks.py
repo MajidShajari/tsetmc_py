@@ -4,7 +4,7 @@ import pandas as pd
 
 from tsetmc_scrape import (
     get_stocks_list_from_market_watch_init_page,
-    get_stocks_list_from_symbols_list_page,
+    get_stocks_list_from_stocks_list_page,
     get_stock_with_tse_id,
     get_stock_ids_with_symbol
 )
@@ -27,7 +27,7 @@ class Stocks:
         async def _get_stocks():
             stocks_list = await asyncio.gather(
                 get_stocks_list_from_market_watch_init_page(),
-                get_stocks_list_from_symbols_list_page(),
+                get_stocks_list_from_stocks_list_page(),
                 return_exceptions=True)
             stocks_list = set(stock for result in stocks_list if isinstance(
                 result, list) for stock in result)

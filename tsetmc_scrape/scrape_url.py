@@ -3,11 +3,11 @@ TSETMC_SEARCH_WITH_SYMBOL = (
     "http://www.tsetmc.com/tsev2/data/search.aspx?skey={}")
 
 # returns list of all symbols
-SYMBOLS_LIST_URL = "http://www.tsetmc.com/Loader.aspx?ParTree=111C1417"
+STOCKS_LIST_URL = "http://www.tsetmc.com/Loader.aspx?ParTree=111C1417"
 
 # market watch init, has initial data for market watch like symbols name etc.
 MARKET_WATCH_INIT_URL = (
-    "http://old.tsetmc.com/tsev2/data/MarketWatchInit.aspx?h=0&r=0"
+    "http://www.tsetmc.com/tsev2/data/MarketWatchInit.aspx?h=0&r=0"
 )
 
 TSETMC_MAIN_URL = "http://www.tsetmc.com/Loader.aspx?ParTree=15"
